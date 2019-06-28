@@ -18,14 +18,10 @@ class App extends React.Component {
   state = {
     balance: 0,
     expensePercentage: 0,
-
     totalIncome: 0,
     totalExpense: 0,
     month: null,
-    allIncome: [],
-    allExpenses: [],
-
-   
+    allItems: [],
   };
 
   componentDidMount() {
@@ -54,6 +50,9 @@ class App extends React.Component {
     this.setState({ month });
   }
   formatNumber(num, type = null) {
+    if (typeof num !== 'number') {
+      return '0.00';
+    }
     let numSplit, int, dec, sign;
     num = Math.abs(num);
 
@@ -75,62 +74,57 @@ class App extends React.Component {
     }
     return ' ' + int + '.' + dec;
   }
+  recalulateOnChange(allItems, prevState) {
+    const totalExpense = allItems
+      .filter(({ type }) => type === 'exp')
+      .reduce((acc, item) => {
+        return (acc += +item.value);
+      }, 0);
+    const totalIncome = allItems
+      .filter(({ type }) => type === 'inc')
+      .reduce((acc, item) => {
+        return (acc += +item.value + 0);
+      }, 0);
+    const balance = totalIncome - totalExpense;
+    let expensePercentage = 0;
+    if (prevState.totalIncome > 0) {
+      expensePercentage = Math.round((totalExpense / totalIncome) * 100);
+
+      if (typeof expensePercentage !== 'number' || isNaN(expensePercentage)) {
+        expensePercentage = 0;
+      }
+    }
+    return {
+      totalExpense,
+      totalIncome,
+      balance,
+      expensePercentage,
+      allItems,
+    };
+  }
   onSubmitAmount(description, value, type) {
     const obj = {
       id: new Date().valueOf(),
       description,
       value,
+      type,
     };
-    console.log(obj);
-    if (type === 'inc') {
-      this.setState(prevState => {
-        const allIncome = [...prevState.allIncome, obj];
-        const totalIncome = prevState.totalIncome + obj.value;
-        const balance = totalIncome - prevState.totalExpense;
-        const expensePercentage =
-          Math.round(prevState.totalExpense / totalIncome) * 100;
-        const newState = {
-          allIncome,
-          totalIncome,
-          balance,
-          expensePercentage,
-        };
-        console.log('Income added');
-        return updateObject(prevState, newState);
-      });
-      // await this.setState({ allIncome: newIncomeArray });
-    } else if (type === 'exp') {
-      console.log('Expense added');
-      this.setState(prevState => {
-        const totalExpense = prevState.totalExpense + obj.value;
-        const balance = prevState.totalIncome - totalExpense;
-        let expensePercentage = 100;
-        if (prevState.totalIncome > 0) {
-          expensePercentage =
-            Math.round(totalExpense / prevState.totalIncome) * 100;
-          obj.percentage = Math.round(obj.value / prevState.totalIncome);
-        }
-        obj.percentage = 100;
-        const allExpenses = [...prevState.allExpenses, obj];
-        const newState = {
-          allExpenses,
-          totalExpense,
-          balance,
-          expensePercentage,
-        };
-        return updateObject(prevState, newState);
-      });
-    }
+    this.setState(prevState => {
+      const allItems = [...prevState.allItems, obj];
+      const newState = this.recalulateOnChange(allItems, prevState);
+      return updateObject(prevState, newState);
+    });
   }
   onDeleteItem(id) {
-this.setState(prevState=>{
-  const allItems = prevState.allIncome.concat(prevState.allExpenses)
-   
-
-})
-
+    this.setState(prevState => {
+      const allItems = prevState.allItems.filter(item => id !== item.id);
+      const newState = this.recalulateOnChange(allItems, prevState);
+      return updateObject(prevState, newState);
+    });
   }
   render() {
+    // const allIncome = this.state.allItems.filter(item=>item.type==="inc")
+    // const allExpenses = this.state.allItems.filter(item=>item.type==="inc")
     return (
       <div>
         <div className={classes.top}>
@@ -154,8 +148,10 @@ this.setState(prevState=>{
         <div className={classes.bottom}>
           <Form onSubmitAmount={this.onSubmitAmount.bind(this)} />
           <DisplayTable
-            allIncome={this.state.allIncome}
-            allExpenses={this.state.allExpenses}
+            allItems={this.state.allItems}
+            totalIncome={this.state.totalIncome}
+            totalExpense={this.state.totalExpense}
+            onDeleteItem={id => this.onDeleteItem(id)}
           />
         </div>
       </div>
@@ -164,5 +160,3 @@ this.setState(prevState=>{
 }
 
 export default App;
-
-function calculateExpensePercentage(balance, expense) {}

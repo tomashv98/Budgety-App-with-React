@@ -2,6 +2,13 @@ import React from 'react';
 import classes from '../App.module.css';
 import plusIcon from '../plustag.png';
 
+const updateObject = (oldObj, updatedVals) => {
+  return {
+    ...oldObj,
+    ...updatedVals,
+  };
+};
+
 class Form extends React.Component {
   state = {
     form: {
@@ -10,8 +17,7 @@ class Form extends React.Component {
         valid: false,
         validation: {
           required: true,
-          minLength: 5,
-          maxLength: 30,
+          minLength: 2,
         },
       },
       value: {
@@ -46,16 +52,24 @@ class Form extends React.Component {
       for (let input in updatedForm) {
         formValid = updatedForm[input].valid && formValid;
       }
-      return { form : updatedForm, validForm: formValid };
+      return { form: updatedForm, validForm: formValid };
     });
   }
   onTypeChange(e) {
     this.setState({ type: e.target.value });
   }
   clearInput() {
-    this.setState({
-      description: '',
-      value: '',
+    this.setState(prevState => {
+      const description = updateObject(prevState.form.description, {
+        value: '',
+        valid: false,
+      });
+      const value = updateObject(prevState.form.value, {
+        value: '',
+        valid: false,
+      });
+      const form = (prevState.form, { value, description });
+      return updateObject(prevState, { form, validForm: false });
     });
   }
 
@@ -107,7 +121,7 @@ class Form extends React.Component {
             value={this.state.form.value.value}
           />
           <button
-          disabled={!this.state.validForm}
+            disabled={!this.state.validForm}
             className={classes.add__btn}
             onClick={() => {
               this.props.onSubmitAmount(
