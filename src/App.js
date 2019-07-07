@@ -49,31 +49,7 @@ class App extends React.Component {
     const month = months[monthIndex];
     this.setState({ month });
   }
-  formatNumber(num, type = null) {
-    if (typeof num !== 'number') {
-      return '0.00';
-    }
-    let numSplit, int, dec, sign;
-    num = Math.abs(num);
-
-    num = num.toFixed(2);
-    numSplit = num.split('.');
-
-    int = numSplit[0];
-    if (int.length > 3) {
-      int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
-    }
-    dec = numSplit[1];
-
-    if (type === 'exp') {
-      sign = '-';
-      return sign + ' ' + int + '.' + dec;
-    } else if (type === 'inc') {
-      sign = '+';
-      return sign + ' ' + int + '.' + dec;
-    }
-    return ' ' + int + '.' + dec;
-  }
+  
   recalulateOnChange(allItems, prevState) {
     const totalExpense = allItems
       .filter(({ type }) => type === 'exp')
@@ -133,15 +109,15 @@ class App extends React.Component {
               month={this.state.month}
               year={new Date().getFullYear()}
             />
-            <Balance amount={this.formatNumber(this.state.balance)} />
+            <Balance amount={this.state.balance} />
             <SummaryBar
               type='inc'
-              amount={this.formatNumber(this.state.totalIncome, 'inc')}
+              amount={this.state.totalIncome}
             />
             <SummaryBar
               type='exp'
-              amount={this.formatNumber(this.state.totalExpense, 'exp')}
-              percentage={this.formatNumber(this.state.expensePercentage)}
+              amount={this.state.totalExpense}
+              percentage={this.state.expensePercentage}
             />
           </div>
         </div>

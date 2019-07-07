@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from '../App.module.css';
-
+import formatNumber from "../utils/utility"
 const SummaryBar = props => {
   return (
     <div
@@ -29,10 +29,10 @@ const SummaryBar = props => {
               : classes.budget__expenses__value
           }
         >
-          {props.amount}
+          {formatNumber(props.amount, props.type)}
         </div>
         {props.type === 'exp' && (
-          <div className={classes.budget__expenses__percentage}>{props.percentage} %</div>
+          <div className={classes.budget__expenses__percentage}>{formatNumber(props.percentage)} %</div>
         )}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from '../App.module.css';
 import deleteIcon from '../deleteIcon.png';
-
+import formatNumber from '../utils/utility';
 const ExpenseTable = props => {
   return (
     <div className={props.type === 'inc' ? classes.income : classes.expenses}>
@@ -25,7 +25,9 @@ const ExpenseTable = props => {
                 {item.description}
               </div>
               <div className={classes.right__clearfix}>
-                <div className={classes.item__value}>{item.value}</div>
+                <div className={classes.item__value}>
+                  {formatNumber(+item.value, item.type)}
+                </div>
                 {item.type === 'exp' && (
                   <div className={classes.item__percentage}>
                     {Math.round((item.value / props.totalIncome) * 100) + '%'}
