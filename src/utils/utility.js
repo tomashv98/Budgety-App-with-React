@@ -1,6 +1,5 @@
 const formatNumber = (num, type = null)=> {
   if (typeof num !== 'number') {
-    console.log(typeof num)
     return '0.00';
   }
   let numSplit, int, dec, sign;
