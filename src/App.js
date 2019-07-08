@@ -63,13 +63,12 @@ class App extends React.Component {
       }, 0);
     const balance = totalIncome - totalExpense;
     let expensePercentage = 0;
-    if (prevState.totalIncome > 0) {
+    if (prevState.totalIncome >= 0) {
       expensePercentage = Math.round((totalExpense / totalIncome) * 100);
-
-      if (typeof expensePercentage !== 'number' || isNaN(expensePercentage)) {
-        expensePercentage = 0;
+      if (typeof expensePercentage !== 'number' || isNaN(expensePercentage) || expensePercentage === Infinity) {
+        expensePercentage = 100;
       }
-    }
+    } 
     return {
       totalExpense,
       totalIncome,

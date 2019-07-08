@@ -30,7 +30,11 @@ const ExpenseTable = props => {
                 </div>
                 {item.type === 'exp' && (
                   <div className={classes.item__percentage}>
-                    {Math.round((item.value / props.totalIncome) * 100) + '%'}
+                    {Math.round((item.value / props.totalIncome) * 100) ===
+                    Infinity
+                      ? 100 + '%'
+                      : Math.round((item.value / props.totalIncome) * 100) +
+                        '%'}
                   </div>
                 )}
                 <div className={classes.item__delete}>

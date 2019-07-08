@@ -48,7 +48,7 @@ body {
 **********************************************/
 
 .top {
-  height: 50vh;
+  height: 40vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
     url(back.png);
   background-size: cover;
@@ -58,16 +58,15 @@ body {
 
 .budget {
   position: absolute;
-  width: 50%;
+  width: 350px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;
-  margin: 10px;
 }
 
 .budget__title {
-  font-size: 1.5rem;
+  font-size: 18px;
   text-align: center;
   margin-bottom: 10px;
   font-weight: 300;
@@ -84,7 +83,6 @@ body {
 .budget__income,
 .budget__expenses {
   padding: 12px;
-  font-size: 1rem;
   text-transform: uppercase;
 }
 
@@ -138,11 +136,8 @@ body {
 **********************************************/
 
 /***** FORM *****/
-
-.bottom {
-  margin: 20px 0;
-}
 .add {
+  padding: 14px;
   border-bottom: 1px solid #e7e7e7;
   background-color: #f7f7f7;
 }
@@ -175,7 +170,6 @@ body {
   margin-right: 10px;
   border-radius: 5px;
   transition: border 0.3s;
-  margin: 10px 0;
 }
 
 .add__description {
@@ -226,9 +220,8 @@ body {
 }
 
 .container {
-  width: 100%;
+  width: 1000px;
   margin: 60px auto;
-  display: flex;
 }
 
 .container::after {
@@ -239,14 +232,13 @@ body {
 
 .income {
   float: left;
-  width: 50%;
+  width: 475px;
   margin-right: 50px;
-  margin-left: 25px;
 }
 
 .expenses {
   float: left;
-  width: 50%;
+  width: 475px;
 }
 
 h2 {
@@ -361,21 +353,4 @@ h2 {
 }
 .unpaid:hover .item__description {
   font-weight: 900;
-}
-
-@media screen and (max-width: 414px) {
-  .add__description {
-    width: 80%;
-  }
-  .item {
-    padding: 10px;
-    border-bottom: 1px solid #e7e7e7;
-    font-size: 0.75rem;
-  }
-
-  .item__clearfix {
-    padding: 10px;
-    border-bottom: 1px solid #e7e7e7;
-    font-size: 0.75rem;
-  }
 }

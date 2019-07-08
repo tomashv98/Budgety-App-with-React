@@ -97,7 +97,7 @@ class Form extends React.Component {
   render() {
     return (
       <div className={classes.add}>
-        <div className={classes.add__container}>
+        <form className={classes.add__container}>
           <select
             className={classes.add__type}
             value={this.state.type}
@@ -121,6 +121,7 @@ class Form extends React.Component {
             value={this.state.form.value.value}
           />
           <button
+          type="submit"
             disabled={!this.state.validForm}
             className={classes.add__btn}
             onClick={() => {
@@ -134,7 +135,7 @@ class Form extends React.Component {
           >
             <img className={classes.plusIcon} src={plusIcon} alt='' />
           </button>
-        </div>
+        </form>
       </div>
     );
   }
